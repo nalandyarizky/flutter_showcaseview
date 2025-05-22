@@ -72,6 +72,7 @@ class ToolTipWidget extends StatefulWidget {
     this.descriptionPadding,
     this.titleTextDirection,
     this.descriptionTextDirection,
+    this.textCounter,
     super.key,
   });
 
@@ -108,15 +109,14 @@ class ToolTipWidget extends StatefulWidget {
   final EdgeInsets targetPadding;
   final ShowcaseController showcaseController;
   final double targetTooltipGap;
+  final String? textCounter;
 
   @override
   State<ToolTipWidget> createState() => _ToolTipWidgetState();
 }
 
-class _ToolTipWidgetState extends State<ToolTipWidget>
-    with TickerProviderStateMixin {
-  late final AnimationController _movingAnimationController =
-      AnimationController(
+class _ToolTipWidgetState extends State<ToolTipWidget> with TickerProviderStateMixin {
+  late final AnimationController _movingAnimationController = AnimationController(
     duration: widget.movingAnimationDuration,
     vsync: this,
   );
@@ -126,8 +126,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget>
     curve: Curves.easeInOut,
   );
 
-  late final AnimationController _scaleAnimationController =
-      AnimationController(
+  late final AnimationController _scaleAnimationController = AnimationController(
     duration: widget.scaleAnimationDuration,
     vsync: this,
     lowerBound: widget.disableScaleAnimation ? 1 : 0,
@@ -151,8 +150,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget>
         ..forward();
     }
     if (!widget.disableMovingAnimation) _movingAnimationController.forward();
-    widget.showcaseController.reverseAnimationCallback =
-        widget.disableScaleAnimation ? null : _scaleAnimationController.reverse;
+    widget.showcaseController.reverseAnimationCallback = widget.disableScaleAnimation ? null : _scaleAnimationController.reverse;
   }
 
   @override
@@ -168,86 +166,112 @@ class _ToolTipWidgetState extends State<ToolTipWidget>
 
     final defaultToolTipWidget = widget.container != null
         ? MouseRegion(
-            cursor: widget.onTooltipTap == null
-                ? MouseCursor.defer
-                : SystemMouseCursors.click,
-            child: GestureDetector(
-              onTap: widget.onTooltipTap,
-              child: Center(child: widget.container ?? const SizedBox.shrink()),
-            ),
-          )
+      cursor: widget.onTooltipTap == null ? MouseCursor.defer : SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: widget.onTooltipTap,
+        child: Center(child: widget.container ?? const SizedBox.shrink()),
+      ),
+    )
         : ClipRRect(
-            borderRadius: widget.tooltipBorderRadius ??
-                const BorderRadius.all(Radius.circular(8)),
-            child: MouseRegion(
-              cursor: widget.onTooltipTap == null
-                  ? MouseCursor.defer
-                  : SystemMouseCursors.click,
-              child: GestureDetector(
-                onTap: widget.onTooltipTap,
-                child: Container(
-                  padding: widget.tooltipPadding?.copyWith(left: 0, right: 0),
-                  color: widget.tooltipBackgroundColor,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      if (widget.title case final title?)
-                        DefaultTooltipTextWidget(
-                          padding: (widget.titlePadding ?? EdgeInsets.zero).add(
-                            EdgeInsets.only(
-                              left: widget.tooltipPadding?.left ?? 0,
-                              right: widget.tooltipPadding?.right ?? 0,
-                            ),
-                          ),
-                          text: title,
-                          textAlign: widget.titleTextAlign,
-                          alignment: widget.titleAlignment,
-                          textColor: widget.textColor,
-                          textDirection: widget.titleTextDirection,
-                          textStyle: widget.titleTextStyle ??
-                              Theme.of(context).textTheme.titleLarge?.merge(
-                                    TextStyle(color: widget.textColor),
-                                  ),
+      borderRadius: widget.tooltipBorderRadius ?? const BorderRadius.all(Radius.circular(8)),
+      child: MouseRegion(
+        cursor: widget.onTooltipTap == null ? MouseCursor.defer : SystemMouseCursors.click,
+        child: GestureDetector(
+          onTap: widget.onTooltipTap,
+          child: Container(
+            padding: widget.tooltipPadding?.copyWith(left: 0, right: 0),
+            color: widget.tooltipBackgroundColor,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                if (widget.title case final title?)
+                  DefaultTooltipTextWidget(
+                    padding: (widget.titlePadding ?? EdgeInsets.zero).add(
+                      EdgeInsets.only(
+                        left: widget.tooltipPadding?.left ?? 0,
+                        right: widget.tooltipPadding?.right ?? 0,
+                      ),
+                    ),
+                    text: title,
+                    textAlign: widget.titleTextAlign,
+                    alignment: widget.titleAlignment,
+                    textColor: widget.textColor,
+                    textDirection: widget.titleTextDirection,
+                    textStyle: widget.titleTextStyle ??
+                        Theme.of(context).textTheme.titleLarge?.merge(
+                          TextStyle(color: widget.textColor),
                         ),
-                      if (widget.description case final desc?)
-                        DefaultTooltipTextWidget(
-                          padding:
-                              (widget.descriptionPadding ?? EdgeInsets.zero)
-                                  .add(
-                            EdgeInsets.only(
-                              left: widget.tooltipPadding?.left ?? 0,
-                              right: widget.tooltipPadding?.right ?? 0,
-                            ),
-                          ),
-                          text: desc,
-                          textAlign: widget.descriptionTextAlign,
-                          alignment: widget.descriptionAlignment,
-                          textColor: widget.textColor,
-                          textDirection: widget.descriptionTextDirection,
-                          textStyle: widget.descTextStyle ??
-                              Theme.of(context).textTheme.titleSmall?.merge(
-                                    TextStyle(color: widget.textColor),
-                                  ),
-                        ),
-                      if (widget.tooltipActions.isNotEmpty &&
-                          widget.tooltipActionConfig.position.isInside)
-                        ActionWidget(
-                          tooltipActionConfig: widget.tooltipActionConfig,
-                          outsidePadding: EdgeInsets.only(
-                            left: widget.tooltipPadding?.left ?? 0,
-                            right: widget.tooltipPadding?.right ?? 0,
-                          ),
-                          alignment: widget.tooltipActionConfig.alignment,
-                          crossAxisAlignment:
-                              widget.tooltipActionConfig.crossAxisAlignment,
-                          children: widget.tooltipActions,
-                        ),
-                    ],
                   ),
-                ),
-              ),
+                if (widget.description case final desc?)
+                  DefaultTooltipTextWidget(
+                    padding: (widget.descriptionPadding ?? EdgeInsets.zero).add(
+                      EdgeInsets.only(
+                        left: widget.tooltipPadding?.left ?? 0,
+                        right: widget.tooltipPadding?.right ?? 0,
+                      ),
+                    ),
+                    text: desc,
+                    textAlign: widget.descriptionTextAlign,
+                    alignment: widget.descriptionAlignment,
+                    textColor: widget.textColor,
+                    textDirection: widget.descriptionTextDirection,
+                    textStyle: widget.descTextStyle ??
+                        Theme.of(context).textTheme.titleSmall?.merge(
+                          TextStyle(color: widget.textColor),
+                        ),
+                  ),
+                if (widget.tooltipActions.isNotEmpty && widget.tooltipActionConfig.position.isInside) ...{
+                  //create widget row if text counter is not null or not empty
+                  if (widget.textCounter != null && widget.textCounter!.isNotEmpty) ...{
+                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          DefaultTooltipTextWidget(
+                            padding: (widget.descriptionPadding ?? EdgeInsets.zero).add(
+                              EdgeInsets.only(
+                                left: widget.tooltipPadding?.left ?? 0,
+                                right: widget.tooltipPadding?.right ?? 0,
+                              ),
+                            ),
+                            text: widget.textCounter ?? "",
+                            textAlign: widget.descriptionTextAlign,
+                            alignment: widget.descriptionAlignment,
+                            textColor: widget.textColor,
+                            textDirection: widget.descriptionTextDirection,
+                            textStyle: widget.descTextStyle ??
+                                Theme.of(context).textTheme.titleSmall?.merge(
+                                  TextStyle(color: widget.textColor),
+                                ),
+                          ),
+                          ActionWidget(
+                            tooltipActionConfig: widget.tooltipActionConfig,
+                            outsidePadding: EdgeInsets.only(
+                              left: widget.tooltipPadding?.left ?? 0,
+                              right: widget.tooltipPadding?.right ?? 0,
+                            ),
+                            alignment: widget.tooltipActionConfig.alignment,
+                            crossAxisAlignment: widget.tooltipActionConfig.crossAxisAlignment,
+                            children: widget.tooltipActions,
+                          ),
+                        ])
+                  } else ...{
+                    ActionWidget(
+                      tooltipActionConfig: widget.tooltipActionConfig,
+                      outsidePadding: EdgeInsets.only(
+                        left: widget.tooltipPadding?.left ?? 0,
+                        right: widget.tooltipPadding?.right ?? 0,
+                      ),
+                      alignment: widget.tooltipActionConfig.alignment,
+                      crossAxisAlignment: widget.tooltipActionConfig.crossAxisAlignment,
+                      children: widget.tooltipActions,
+                    ),
+                  }
+                }
+              ],
             ),
-          );
+          ),
+        ),
+      ),
+    );
 
     return Material(
       type: MaterialType.transparency,
@@ -259,37 +283,28 @@ class _ToolTipWidgetState extends State<ToolTipWidget>
         targetPosition: targetPosition,
         targetSize: targetSize,
         position: widget.tooltipPosition,
-        screenSize: widget.showcaseController.rootWidgetSize ??
-            MediaQuery.sizeOf(context),
+        screenSize: widget.showcaseController.rootWidgetSize ?? MediaQuery.sizeOf(context),
         hasArrow: widget.showArrow,
         targetPadding: widget.targetPadding,
         scaleAlignment: widget.scaleAnimationAlignment,
-        hasSecondBox: widget.tooltipActions.isNotEmpty &&
-            (widget.tooltipActionConfig.position.isOutside ||
-                widget.container != null),
+        hasSecondBox: widget.tooltipActions.isNotEmpty && (widget.tooltipActionConfig.position.isOutside || widget.container != null),
         toolTipSlideEndDistance: widget.toolTipSlideEndDistance,
-        gapBetweenContentAndAction:
-            widget.tooltipActionConfig.gapBetweenContentAndAction,
+        gapBetweenContentAndAction: widget.tooltipActionConfig.gapBetweenContentAndAction,
         screenEdgePadding: widget.toolTipMargin,
-        showcaseOffset: widget.showcaseController.rootRenderObject
-                ?.localToGlobal(Offset.zero) ??
-            Offset.zero,
+        showcaseOffset: widget.showcaseController.rootRenderObject?.localToGlobal(Offset.zero) ?? Offset.zero,
         targetTooltipGap: widget.targetTooltipGap,
         children: [
           _TooltipLayoutId(
             id: TooltipLayoutSlot.tooltipBox,
             child: defaultToolTipWidget,
           ),
-          if (widget.tooltipActions.isNotEmpty &&
-              (widget.tooltipActionConfig.position.isOutside ||
-                  widget.container != null))
+          if (widget.tooltipActions.isNotEmpty && (widget.tooltipActionConfig.position.isOutside || widget.container != null))
             _TooltipLayoutId(
               id: TooltipLayoutSlot.actionBox,
               child: ActionWidget(
                 tooltipActionConfig: widget.tooltipActionConfig,
                 alignment: widget.tooltipActionConfig.alignment,
-                crossAxisAlignment:
-                    widget.tooltipActionConfig.crossAxisAlignment,
+                crossAxisAlignment: widget.tooltipActionConfig.crossAxisAlignment,
                 children: widget.tooltipActions,
               ),
             ),
@@ -322,8 +337,7 @@ class _ToolTipWidgetState extends State<ToolTipWidget>
       if (status == AnimationStatus.completed) {
         _movingAnimationController.reverse();
       }
-      if (_movingAnimationController.isDismissed &&
-          !widget.disableMovingAnimation) {
+      if (_movingAnimationController.isDismissed && !widget.disableMovingAnimation) {
         _movingAnimationController.forward();
       }
     });

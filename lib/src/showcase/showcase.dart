@@ -64,6 +64,7 @@ class Showcase extends StatefulWidget {
     required this.description,
     required this.child,
     this.title,
+    this.textCounter,
     this.titleTextAlign = TextAlign.start,
     this.descriptionTextAlign = TextAlign.start,
     this.titleAlignment = Alignment.center,
@@ -85,7 +86,7 @@ class Showcase extends StatefulWidget {
     this.disableMovingAnimation,
     this.disableScaleAnimation,
     this.tooltipPadding =
-        const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+    const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
     this.onToolTipClick,
     this.targetPadding = EdgeInsets.zero,
     this.blurValue,
@@ -117,25 +118,25 @@ class Showcase extends StatefulWidget {
         container = null,
         showcaseKey = key,
         assert(
-          targetTooltipGap >= 0,
-          'targetTooltipGap must be greater than 0',
+        targetTooltipGap >= 0,
+        'targetTooltipGap must be greater than 0',
         ),
         assert(
-          overlayOpacity >= 0.0 && overlayOpacity <= 1.0,
-          'overlay opacity must be between 0 and 1.',
+        overlayOpacity >= 0.0 && overlayOpacity <= 1.0,
+        'overlay opacity must be between 0 and 1.',
         ),
         assert(
-          onTargetClick == null || disposeOnTap != null,
-          "`disposeOnTap` is required if you're using `onTargetClick`",
+        onTargetClick == null || disposeOnTap != null,
+        "`disposeOnTap` is required if you're using `onTargetClick`",
         ),
         assert(
-          disposeOnTap == null || onTargetClick != null,
-          "`onTargetClick` is required if you're using `disposeOnTap`",
+        disposeOnTap == null || onTargetClick != null,
+        "`onTargetClick` is required if you're using `disposeOnTap`",
         ),
         assert(
-          onBarrierClick == null || disableBarrierInteraction == false,
-          "can't use `onBarrierClick` & `disableBarrierInteraction` property "
-          'at same time',
+        onBarrierClick == null || disableBarrierInteraction == false,
+        "can't use `onBarrierClick` & `disableBarrierInteraction` property "
+            'at same time',
         );
 
   /// Creates a showcase with a completely custom tooltip widget.
@@ -201,6 +202,7 @@ class Showcase extends StatefulWidget {
     this.enableAutoScroll,
     this.toolTipMargin = 14,
     this.targetTooltipGap = 10,
+    this.textCounter
   })  : showArrow = false,
         onToolTipClick = null,
         scaleAnimationDuration = const Duration(milliseconds: 300),
@@ -225,25 +227,25 @@ class Showcase extends StatefulWidget {
         descriptionTextDirection = null,
         showcaseKey = key,
         assert(
-          targetTooltipGap >= 0,
-          'targetTooltipGap must be greater than 0',
+        targetTooltipGap >= 0,
+        'targetTooltipGap must be greater than 0',
         ),
         assert(
-          overlayOpacity >= 0.0 && overlayOpacity <= 1.0,
-          'overlay opacity must be between 0 and 1.',
+        overlayOpacity >= 0.0 && overlayOpacity <= 1.0,
+        'overlay opacity must be between 0 and 1.',
         ),
         assert(
-          onTargetClick == null || disposeOnTap != null,
-          "`disposeOnTap` is required if you're using `onTargetClick`",
+        onTargetClick == null || disposeOnTap != null,
+        "`disposeOnTap` is required if you're using `onTargetClick`",
         ),
         assert(
-          disposeOnTap == null || onTargetClick != null,
-          "`onTargetClick` is required if you're using `disposeOnTap`",
+        disposeOnTap == null || onTargetClick != null,
+        "`onTargetClick` is required if you're using `disposeOnTap`",
         ),
         assert(
-          onBarrierClick == null || disableBarrierInteraction == false,
-          "can't use `onBarrierClick` & `disableBarrierInteraction` property "
-          'at same time',
+        onBarrierClick == null || disableBarrierInteraction == false,
+        "can't use `onBarrierClick` & `disableBarrierInteraction` property "
+            'at same time',
         );
 
   /// A key that is unique across the entire app.
@@ -520,16 +522,18 @@ class Showcase extends StatefulWidget {
   /// Defaults to 10.
   final double targetTooltipGap;
 
+  final String? textCounter;
+
   @override
   State<Showcase> createState() => _ShowcaseState();
 }
 
 class _ShowcaseState extends State<Showcase> {
   ShowcaseController get _controller => ShowcaseService.instance.getController(
-        key: widget.showcaseKey,
-        id: _uniqueId,
-        scope: _showCaseWidgetManager.name,
-      );
+    key: widget.showcaseKey,
+    id: _uniqueId,
+    scope: _showCaseWidgetManager.name,
+  );
 
   late ShowcaseScope _showCaseWidgetManager;
 

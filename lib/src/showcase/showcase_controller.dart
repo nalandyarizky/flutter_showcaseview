@@ -297,60 +297,61 @@ class ShowcaseController {
     tooltipWidgets = isScrollRunning
         ? [Center(child: config.scrollLoadingWidget)]
         : [
-            TargetWidget(
-              offset: rectBound.topLeft,
-              size: size,
-              onTap: _getOnTargetTap,
-              radius: config.targetBorderRadius,
-              onDoubleTap: config.onTargetDoubleTap,
-              onLongPress: config.onTargetLongPress,
-              shapeBorder: config.targetShapeBorder,
-              disableDefaultChildGestures: config.disableDefaultTargetGestures,
-              targetPadding: config.targetPadding,
-            ),
-            ToolTipWidget(
-              key: ValueKey(id),
-              title: config.title,
-              titleTextAlign: config.titleTextAlign,
-              description: config.description,
-              descriptionTextAlign: config.descriptionTextAlign,
-              titleAlignment: config.titleAlignment,
-              descriptionAlignment: config.descriptionAlignment,
-              titleTextStyle: config.titleTextStyle,
-              descTextStyle: config.descTextStyle,
-              container: config.container,
-              tooltipBackgroundColor: config.tooltipBackgroundColor,
-              textColor: config.textColor,
-              showArrow: config.showArrow,
-              onTooltipTap: config.disposeOnTap ?? config.onToolTipClick != null
-                  ? _getOnTooltipTap
-                  : null,
-              tooltipPadding: config.tooltipPadding,
-              disableMovingAnimation: config.disableMovingAnimation ??
-                  showcaseView.disableMovingAnimation,
-              disableScaleAnimation: (config.disableScaleAnimation ??
-                      showcaseView.disableScaleAnimation) ||
-                  config.container != null,
-              movingAnimationDuration: config.movingAnimationDuration,
-              tooltipBorderRadius: config.tooltipBorderRadius,
-              scaleAnimationDuration: config.scaleAnimationDuration,
-              scaleAnimationCurve: config.scaleAnimationCurve,
-              scaleAnimationAlignment: config.scaleAnimationAlignment,
-              tooltipPosition: config.tooltipPosition,
-              titlePadding: config.titlePadding,
-              descriptionPadding: config.descriptionPadding,
-              titleTextDirection: config.titleTextDirection,
-              descriptionTextDirection: config.descriptionTextDirection,
-              toolTipSlideEndDistance: config.toolTipSlideEndDistance,
-              toolTipMargin: config.toolTipMargin,
-              tooltipActionConfig: _getTooltipActionConfig(),
-              tooltipActions: _getTooltipActions(),
-              targetPadding: config.targetPadding,
-              targetTooltipGap: config.targetTooltipGap,
-              showcaseController: this,
-            ),
-            if (_getFloatingActionWidget case final floatAction?) floatAction,
-          ];
+      TargetWidget(
+        offset: rectBound.topLeft,
+        size: size,
+        onTap: _getOnTargetTap,
+        radius: config.targetBorderRadius,
+        onDoubleTap: config.onTargetDoubleTap,
+        onLongPress: config.onTargetLongPress,
+        shapeBorder: config.targetShapeBorder,
+        disableDefaultChildGestures: config.disableDefaultTargetGestures,
+        targetPadding: config.targetPadding,
+      ),
+      ToolTipWidget(
+        key: ValueKey(id),
+        title: config.title,
+        titleTextAlign: config.titleTextAlign,
+        description: config.description,
+        descriptionTextAlign: config.descriptionTextAlign,
+        titleAlignment: config.titleAlignment,
+        descriptionAlignment: config.descriptionAlignment,
+        titleTextStyle: config.titleTextStyle,
+        descTextStyle: config.descTextStyle,
+        container: config.container,
+        textCounter:config.textCounter,
+        tooltipBackgroundColor: config.tooltipBackgroundColor,
+        textColor: config.textColor,
+        showArrow: config.showArrow,
+        onTooltipTap: config.disposeOnTap ?? config.onToolTipClick != null
+            ? _getOnTooltipTap
+            : null,
+        tooltipPadding: config.tooltipPadding,
+        disableMovingAnimation: config.disableMovingAnimation ??
+            showcaseView.disableMovingAnimation,
+        disableScaleAnimation: (config.disableScaleAnimation ??
+            showcaseView.disableScaleAnimation) ||
+            config.container != null,
+        movingAnimationDuration: config.movingAnimationDuration,
+        tooltipBorderRadius: config.tooltipBorderRadius,
+        scaleAnimationDuration: config.scaleAnimationDuration,
+        scaleAnimationCurve: config.scaleAnimationCurve,
+        scaleAnimationAlignment: config.scaleAnimationAlignment,
+        tooltipPosition: config.tooltipPosition,
+        titlePadding: config.titlePadding,
+        descriptionPadding: config.descriptionPadding,
+        titleTextDirection: config.titleTextDirection,
+        descriptionTextDirection: config.descriptionTextDirection,
+        toolTipSlideEndDistance: config.toolTipSlideEndDistance,
+        toolTipMargin: config.toolTipMargin,
+        tooltipActionConfig: _getTooltipActionConfig(),
+        tooltipActions: _getTooltipActions(),
+        targetPadding: config.targetPadding,
+        targetTooltipGap: config.targetTooltipGap,
+        showcaseController: this,
+      ),
+      if (_getFloatingActionWidget case final floatAction?) floatAction,
+    ];
   }
 
   /// Moves to the next showcase if any are remaining. Called when a showcase
@@ -369,8 +370,8 @@ class ShowcaseController {
     if (config.disposeOnTap ?? false) {
       showcaseView.dismiss();
       assert(
-        config.onTargetClick != null,
-        'onTargetClick callback should be provided when disposeOnTap is true',
+      config.onTargetClick != null,
+      'onTargetClick callback should be provided when disposeOnTap is true',
       );
       config.onTargetClick?.call();
     } else {
