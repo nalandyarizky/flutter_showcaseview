@@ -69,6 +69,8 @@ class Showcase extends StatefulWidget {
     this.descriptionTextAlign = TextAlign.start,
     this.titleAlignment = Alignment.center,
     this.descriptionAlignment = Alignment.center,
+    this.textCounterTextAlign = TextAlign.start,
+    this.textCounterAlignment = Alignment.center,
     this.targetShapeBorder = const RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(8)),
     ),
@@ -76,6 +78,7 @@ class Showcase extends StatefulWidget {
     this.overlayOpacity = 0.75,
     this.titleTextStyle,
     this.descTextStyle,
+    this.textCounterTextStyle,
     this.tooltipBackgroundColor = Colors.white,
     this.textColor = Colors.black,
     this.scrollLoadingWidget = Constants.defaultProgressIndicator,
@@ -85,8 +88,7 @@ class Showcase extends StatefulWidget {
     this.movingAnimationDuration = const Duration(milliseconds: 2000),
     this.disableMovingAnimation,
     this.disableScaleAnimation,
-    this.tooltipPadding =
-    const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+    this.tooltipPadding = const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
     this.onToolTipClick,
     this.targetPadding = EdgeInsets.zero,
     this.blurValue,
@@ -118,25 +120,25 @@ class Showcase extends StatefulWidget {
         container = null,
         showcaseKey = key,
         assert(
-        targetTooltipGap >= 0,
-        'targetTooltipGap must be greater than 0',
+          targetTooltipGap >= 0,
+          'targetTooltipGap must be greater than 0',
         ),
         assert(
-        overlayOpacity >= 0.0 && overlayOpacity <= 1.0,
-        'overlay opacity must be between 0 and 1.',
+          overlayOpacity >= 0.0 && overlayOpacity <= 1.0,
+          'overlay opacity must be between 0 and 1.',
         ),
         assert(
-        onTargetClick == null || disposeOnTap != null,
-        "`disposeOnTap` is required if you're using `onTargetClick`",
+          onTargetClick == null || disposeOnTap != null,
+          "`disposeOnTap` is required if you're using `onTargetClick`",
         ),
         assert(
-        disposeOnTap == null || onTargetClick != null,
-        "`onTargetClick` is required if you're using `disposeOnTap`",
+          disposeOnTap == null || onTargetClick != null,
+          "`onTargetClick` is required if you're using `disposeOnTap`",
         ),
         assert(
-        onBarrierClick == null || disableBarrierInteraction == false,
-        "can't use `onBarrierClick` & `disableBarrierInteraction` property "
-            'at same time',
+          onBarrierClick == null || disableBarrierInteraction == false,
+          "can't use `onBarrierClick` & `disableBarrierInteraction` property "
+          'at same time',
         );
 
   /// Creates a showcase with a completely custom tooltip widget.
@@ -171,39 +173,39 @@ class Showcase extends StatefulWidget {
   ///   ),
   /// )
   /// ```
-  const Showcase.withWidget({
-    required GlobalKey key,
-    required this.height,
-    required this.width,
-    required this.container,
-    required this.child,
-    this.floatingActionWidget,
-    this.targetShapeBorder = Constants.defaultTargetShapeBorder,
-    this.overlayColor = Colors.black45,
-    this.targetBorderRadius,
-    this.overlayOpacity = 0.75,
-    this.scrollLoadingWidget = Constants.defaultProgressIndicator,
-    this.onTargetClick,
-    this.disposeOnTap,
-    this.movingAnimationDuration = Constants.defaultAnimationDuration,
-    this.disableMovingAnimation,
-    this.targetPadding = EdgeInsets.zero,
-    this.blurValue,
-    this.onTargetLongPress,
-    this.onTargetDoubleTap,
-    this.disableDefaultTargetGestures = false,
-    this.tooltipPosition,
-    this.onBarrierClick,
-    this.disableBarrierInteraction = false,
-    this.toolTipSlideEndDistance = 7,
-    this.tooltipActions,
-    this.tooltipActionConfig,
-    this.scrollAlignment = 0.5,
-    this.enableAutoScroll,
-    this.toolTipMargin = 14,
-    this.targetTooltipGap = 10,
-    this.textCounter
-  })  : showArrow = false,
+  const Showcase.withWidget(
+      {required GlobalKey key,
+      required this.height,
+      required this.width,
+      required this.container,
+      required this.child,
+      this.floatingActionWidget,
+      this.targetShapeBorder = Constants.defaultTargetShapeBorder,
+      this.overlayColor = Colors.black45,
+      this.targetBorderRadius,
+      this.overlayOpacity = 0.75,
+      this.scrollLoadingWidget = Constants.defaultProgressIndicator,
+      this.onTargetClick,
+      this.disposeOnTap,
+      this.movingAnimationDuration = Constants.defaultAnimationDuration,
+      this.disableMovingAnimation,
+      this.targetPadding = EdgeInsets.zero,
+      this.blurValue,
+      this.onTargetLongPress,
+      this.onTargetDoubleTap,
+      this.disableDefaultTargetGestures = false,
+      this.tooltipPosition,
+      this.onBarrierClick,
+      this.disableBarrierInteraction = false,
+      this.toolTipSlideEndDistance = 7,
+      this.tooltipActions,
+      this.tooltipActionConfig,
+      this.scrollAlignment = 0.5,
+      this.enableAutoScroll,
+      this.toolTipMargin = 14,
+      this.targetTooltipGap = 10,
+      this.textCounter})
+      : showArrow = false,
         onToolTipClick = null,
         scaleAnimationDuration = const Duration(milliseconds: 300),
         scaleAnimationCurve = Curves.decelerate,
@@ -215,6 +217,9 @@ class Showcase extends StatefulWidget {
         descriptionTextAlign = TextAlign.start,
         titleAlignment = Alignment.center,
         descriptionAlignment = Alignment.center,
+        textCounterTextAlign = TextAlign.start,
+        textCounterAlignment = Alignment.center,
+        textCounterTextStyle = null,
         titleTextStyle = null,
         descTextStyle = null,
         tooltipBackgroundColor = Colors.white,
@@ -227,25 +232,25 @@ class Showcase extends StatefulWidget {
         descriptionTextDirection = null,
         showcaseKey = key,
         assert(
-        targetTooltipGap >= 0,
-        'targetTooltipGap must be greater than 0',
+          targetTooltipGap >= 0,
+          'targetTooltipGap must be greater than 0',
         ),
         assert(
-        overlayOpacity >= 0.0 && overlayOpacity <= 1.0,
-        'overlay opacity must be between 0 and 1.',
+          overlayOpacity >= 0.0 && overlayOpacity <= 1.0,
+          'overlay opacity must be between 0 and 1.',
         ),
         assert(
-        onTargetClick == null || disposeOnTap != null,
-        "`disposeOnTap` is required if you're using `onTargetClick`",
+          onTargetClick == null || disposeOnTap != null,
+          "`disposeOnTap` is required if you're using `onTargetClick`",
         ),
         assert(
-        disposeOnTap == null || onTargetClick != null,
-        "`onTargetClick` is required if you're using `disposeOnTap`",
+          disposeOnTap == null || onTargetClick != null,
+          "`onTargetClick` is required if you're using `disposeOnTap`",
         ),
         assert(
-        onBarrierClick == null || disableBarrierInteraction == false,
-        "can't use `onBarrierClick` & `disableBarrierInteraction` property "
-            'at same time',
+          onBarrierClick == null || disableBarrierInteraction == false,
+          "can't use `onBarrierClick` & `disableBarrierInteraction` property "
+          'at same time',
         );
 
   /// A key that is unique across the entire app.
@@ -290,6 +295,8 @@ class Showcase extends StatefulWidget {
 
   /// TextStyle for default tooltip description
   final TextStyle? descTextStyle;
+
+  final TextStyle? textCounterTextStyle;
 
   /// Empty space around tooltip content.
   ///
@@ -489,6 +496,10 @@ class Showcase extends StatefulWidget {
   /// To understand how text is aligned, check [TextAlign]
   final TextAlign descriptionTextAlign;
 
+  final TextAlign textCounterTextAlign;
+
+  final AlignmentGeometry textCounterAlignment;
+
   /// Defines the margin from the screen edge for the tooltip.
   /// ToolTip will try to not cross this border around the screen
   ///
@@ -530,10 +541,10 @@ class Showcase extends StatefulWidget {
 
 class _ShowcaseState extends State<Showcase> {
   ShowcaseController get _controller => ShowcaseService.instance.getController(
-    key: widget.showcaseKey,
-    id: _uniqueId,
-    scope: _showCaseWidgetManager.name,
-  );
+        key: widget.showcaseKey,
+        id: _uniqueId,
+        scope: _showCaseWidgetManager.name,
+      );
 
   late ShowcaseScope _showCaseWidgetManager;
 
@@ -592,8 +603,7 @@ class _ShowcaseState extends State<Showcase> {
       scope: _showCaseWidgetManager.name,
     );
     ShowcaseService.instance.addController(
-      controller: _controller
-        ..showcaseView = _showCaseWidgetManager.showcaseView,
+      controller: _controller..showcaseView = _showCaseWidgetManager.showcaseView,
       key: widget.showcaseKey,
       id: _uniqueId,
       scope: _showCaseWidgetManager.name,

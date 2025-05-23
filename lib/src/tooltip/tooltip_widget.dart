@@ -43,6 +43,7 @@ class ToolTipWidget extends StatefulWidget {
     required this.description,
     required this.titleTextStyle,
     required this.descTextStyle,
+    required this.textCounterTextStyle,
     required this.container,
     required this.tooltipBackgroundColor,
     required this.textColor,
@@ -51,8 +52,10 @@ class ToolTipWidget extends StatefulWidget {
     required this.movingAnimationDuration,
     required this.titleTextAlign,
     required this.descriptionTextAlign,
+    required this.textCounterTextAlign,
     required this.titleAlignment,
     required this.descriptionAlignment,
+    required this.textCounterAlignment,
     required this.tooltipActionConfig,
     required this.tooltipActions,
     required this.targetPadding,
@@ -80,10 +83,13 @@ class ToolTipWidget extends StatefulWidget {
   final TextAlign? titleTextAlign;
   final String? description;
   final TextAlign? descriptionTextAlign;
+  final TextAlign? textCounterTextAlign;
   final AlignmentGeometry titleAlignment;
   final AlignmentGeometry descriptionAlignment;
+  final AlignmentGeometry textCounterAlignment;
   final TextStyle? titleTextStyle;
   final TextStyle? descTextStyle;
+  final TextStyle? textCounterTextStyle;
   final Widget? container;
   final Color? tooltipBackgroundColor;
   final Color? textColor;
@@ -233,11 +239,11 @@ class _ToolTipWidgetState extends State<ToolTipWidget> with TickerProviderStateM
                               ),
                             ),
                             text: widget.textCounter ?? "",
-                            textAlign: widget.descriptionTextAlign,
-                            alignment: widget.descriptionAlignment,
+                            textAlign: widget.textCounterTextAlign,
+                            alignment: widget.textCounterAlignment,
                             textColor: widget.textColor,
                             textDirection: widget.descriptionTextDirection,
-                            textStyle: widget.descTextStyle ??
+                            textStyle: widget.textCounterTextStyle ??
                                 Theme.of(context).textTheme.titleSmall?.merge(
                                   TextStyle(color: widget.textColor),
                                 ),
